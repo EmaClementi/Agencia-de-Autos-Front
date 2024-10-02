@@ -1,0 +1,12 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Asegura que el padding y el borde se incluyan en el ancho y alto total */
+}
+body{
+    font-family: Arial, sans-serif;
+}
+
+
+
+  

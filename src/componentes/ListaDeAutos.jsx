@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Boton from './Boton'; // Asegúrate de que la ruta sea correcta
+import Boton from './Boton';
 import './ListaDeAutos.css';
 
 const ListaDeAutos = () => {
@@ -11,8 +11,9 @@ const ListaDeAutos = () => {
     tipo: 'compra',
     precio: '',
     detalles: '',
-    imagenUrl: '',
+    imagenes: [],
   });
+  const [autoEnEdicion, setAutoEnEdicion] = useState(null);
 
   useEffect(() => {
     const fetchAutos = async () => {
@@ -35,36 +36,79 @@ const ListaDeAutos = () => {
     }));
   };
 
+  const handleImagenChange = (e) => {
+    const { value } = e.target;
+    setNuevoAuto((prevState) => ({
+      ...prevState,
+      imagenes: [...prevState.imagenes, value], // Agregar nueva URL al array
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await fetch('http://localhost:3000/api/autos', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(nuevoAuto),
-      });
 
-      if (!response.ok) {
-        throw new Error('Error al agregar el auto');
+    if (autoEnEdicion) {
+      try {
+        const response = await fetch(`http://localhost:3000/api/autos/${autoEnEdicion._id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(nuevoAuto),
+        });
+
+        if (!response.ok) {
+          throw new Error('Error al actualizar el auto');
+        }
+
+        const autoActualizado = await response.json();
+        setAutos((prevAutos) =>
+          prevAutos.map((auto) => (auto._id === autoActualizado._id ? autoActualizado : auto))
+        );
+        setAutoEnEdicion(null);
+        setNuevoAuto({
+          marca: '',
+          modelo: '',
+          año: '',
+          tipo: 'compra',
+          precio: '',
+          detalles: '',
+          imagenes: [],
+        });
+      } catch (error) {
+        console.error('Error al actualizar el auto:', error);
       }
+    } else {
+      try {
+        const response = await fetch('http://localhost:3000/api/autos', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(nuevoAuto),
+        });
 
-      const autoAgregado = await response.json();
-      setAutos((prevAutos) => [...prevAutos, autoAgregado]);
-      setNuevoAuto({
-        marca: '',
-        modelo: '',
-        año: '',
-        tipo: 'compra',
-        precio: '',
-        detalles: '',
-        imagenUrl: '',
-      });
-    } catch (error) {
-      console.error('Error al agregar el auto:', error);
+        if (!response.ok) {
+          throw new Error('Error al agregar el auto');
+        }
+
+        const autoAgregado = await response.json();
+        setAutos((prevAutos) => [...prevAutos, autoAgregado]);
+        setNuevoAuto({
+          marca: '',
+          modelo: '',
+          año: '',
+          tipo: 'compra',
+          precio: '',
+          detalles: '',
+          imagenes: [],
+        });
+      } catch (error) {
+        console.error('Error al agregar el auto:', error);
+      }
     }
   };
+
   const eliminarAuto = async (id) => {
     try {
       const response = await fetch(`http://localhost:3000/api/autos/${id}`, {
@@ -75,17 +119,21 @@ const ListaDeAutos = () => {
         throw new Error('Error al eliminar el auto');
       }
 
-      // Eliminar el auto del estado
       setAutos((prevAutos) => prevAutos.filter((auto) => auto._id !== id));
     } catch (error) {
       console.error('Error al eliminar el auto:', error);
     }
   };
 
+  const editarAuto = (auto) => {
+    setNuevoAuto(auto);
+    setAutoEnEdicion(auto);
+  };
+
   return (
     <div>
       <h1>Lista de Autos</h1>
-      <form onSubmit={handleSubmit}>
+      <form className='formularioCargaAuto' onSubmit={handleSubmit}>
         <input
           type="text"
           name="marca"
@@ -127,28 +175,23 @@ const ListaDeAutos = () => {
           placeholder="Detalles"
           value={nuevoAuto.detalles}
           onChange={handleChange}
+          required
         />
         <input
           type="text"
-          name="imagenUrl"
           placeholder="URL de la Imagen"
-          value={nuevoAuto.imagenUrl}
-          onChange={handleChange}
+          onChange={handleImagenChange}
         />
-        <Boton texto="Agregar Auto" estilo="buttonAgregarAuto" onClick={handleSubmit} />
+        <Boton texto={autoEnEdicion ? 'Actualizar Auto' : 'Agregar Auto'} estilo="buttonAgregarAuto" />
       </form>
       <ul>
         {autos.map((auto) => (
-          <li className='listaAutos' key={auto._id}>
+          <li key={auto._id}>
             {auto.marca} {auto.modelo} ({auto.año}) - ${auto.precio}
-            {auto.imagenUrl && (
-              <div>
-                <img src={auto.imagenUrl} alt={`Imagen de ${auto.marca} ${auto.modelo}`} width="150" />
-              </div>
-            )}
+            <Boton texto="Editar" estilo="buttonEditar" onClick={() => editarAuto(auto)} />
             <Boton texto="Eliminar" estilo="buttonEliminar" onClick={() => eliminarAuto(auto._id)} />
           </li>
-        ))}
+           ))}
       </ul>
     </div>
   );
