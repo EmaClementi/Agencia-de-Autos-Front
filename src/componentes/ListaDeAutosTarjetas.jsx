@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import './ListaDeAutosTarjetas.css'; // Estilos para las tarjetas
+import './ListaDeAutosTarjetas.css'; 
+
 
 function ListaDeAutosTarjetas() {
   const [autos, setAutos] = useState([]);
@@ -9,7 +10,7 @@ function ListaDeAutosTarjetas() {
   useEffect(() => {
     const fetchAutos = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/autos'); // Reemplaza con tu API
+        const response = await fetch('http://localhost:3000/api/autos');
         if (!response.ok) {
           throw new Error('Error al cargar los autos');
         }
