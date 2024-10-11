@@ -1,0 +1,26 @@
+.search-filter{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 100%;
+    margin: 2vh;
+  
+  }
+.selectTipo,
+.selectOrdenar{
+    padding: 9px;
+    margin: 10px 0;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+.buscador{
+    width: 50vh;
+    padding: 9px;
+    margin: 10px 0;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+  

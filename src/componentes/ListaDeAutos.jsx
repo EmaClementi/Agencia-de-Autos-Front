@@ -131,7 +131,7 @@ const ListaDeAutos = () => {
   };
 
   return (
-    <div>
+    <div className="listaDeAutos">
       <h1>Lista de Autos</h1>
       <form className='formularioCargaAuto' onSubmit={handleSubmit}>
         <input

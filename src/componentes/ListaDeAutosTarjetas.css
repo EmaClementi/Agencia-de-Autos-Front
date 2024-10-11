@@ -8,8 +8,11 @@
 .card-list {
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
   flex-wrap: wrap;
   gap: 20px;
+
 }
 
 .card {
@@ -46,4 +49,10 @@
 .card-año,
 .card-precio {
   margin: 5px 0;
+}
+.autos-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
