@@ -1,40 +1,38 @@
 import React from 'react';
-import './FiltroAutos.css'
-function FiltroAutos({ search, setSearch, tipo, setTipo, sort, setSort }) {
+import Boton from './Boton';
+import './FiltroAutos.css'; 
+
+const FiltroAutos = ({ search, setSearch, tipo, setTipo, sort, setSort, onFilter }) => {
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      onFilter(); 
+    }
+  };
+
   return (
-    <div className="search-filter">
-      {/* Buscador */}
+    <form className="search-filter" onSubmit={(e) => e.preventDefault()}>
       <input
-        className="buscador"
         type="text"
-        placeholder="Buscar por modelo o marca"
+        placeholder="Buscar por marca o modelo...."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
+        onKeyPress={handleKeyPress}
+        className="buscador"
       />
-
-      {/* Filtro por tipo (alquilar o comprar) */}
-      <select
-        className="selectTipo"
-        onChange={(e) => setTipo(e.target.value)}
-        value={tipo}
-      >
+      <select name="tipo" value={tipo} onChange={(e) => setTipo(e.target.value)} className="selectTipo">
         <option value="">Todos</option>
         <option value="alquiler">Alquiler</option>
         <option value="compra">Compra</option>
       </select>
-
-      {/* Filtro de ordenación por precio */}
-      <select
-        className="selectOrdenar"
-        onChange={(e) => setSort(e.target.value)}
-        value={sort}
-      >
-        <option value="">Ordenar por</option>
-        <option value="precio_asc">Precio: Menor precio</option>
-        <option value="precio_desc">Precio: Mayor precio</option>
+      <select name="sort" value={sort} onChange={(e) => setSort(e.target.value)} className="selectOrdenar">
+        <option value="">Ordenar por precio</option>
+        <option value="precio_asc">Menor precio</option>
+        <option value="precio_desc">Mayor precio</option>
       </select>
-    </div>
+      <Boton texto="Buscar" estilo="buttonBuscar" onClick={onFilter} />
+    </form>
   );
-}
+};
 
 export default FiltroAutos;
