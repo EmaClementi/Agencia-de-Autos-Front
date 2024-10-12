@@ -28,18 +28,100 @@
 .listaDeAutos ul {
   list-style-type: none;
   padding: 0;
+  max-width: 600px; /* Ajustar el ancho máximo de la lista */
+  margin: 0 auto; /* Centrar la lista */
 }
 
 .listaDeAutos li {
-  padding: 10px;
-  margin: 10px 10px;
-  background-color: #d3e4f5;
+  padding: 15px;
+  margin: 10px 0;
+  background-color: #f8f9fa;
   border: 1px solid #ced4da;
   border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.listaDeAutos li:hover {
+  background-color: #e2e6ea; /* Change background on hover */
+}
+
+.listaDeAutos .botonEditar,
+.listaDeAutos .botonEliminar {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: 10px; /* Espacio entre los botones */
+}
+
+.listaDeAutos .botonEditar {
+  background-color: #007bff; /* Blue color */
+}
+
+.listaDeAutos .botonEliminar {
+  background-color: #dc3545; /* Red color */
+}
+
+.listaDeAutos .botonEditar:hover {
+  background-color: #87a3c2; /* Darker blue on hover */
+}
+
+.listaDeAutos .botonEliminar:hover {
+  background-color: #c82333; /* Darker red on hover */
 }
 
 .listaDeAutos .error {
   color: red;
   font-size: 0.875rem;
   margin-top: 0.25rem;
+}
+.listaDeAutos {
+  margin: 20px;
+}
+.tablaAutos {
+  width: 80%; /* Cambia el ancho de 100% a un valor menor, como 80% */
+  max-width: 800px; /* O establece un ancho máximo */
+  border-collapse: collapse; /* Elimina el espacio entre bordes */
+  margin: 0 auto; /* Centra la tabla horizontalmente */
+}
+
+.tablaAutos th,
+.tablaAutos td {
+  border-bottom: 1px solid #ddd; /* Solo borde inferior */
+  padding: 10px;
+  text-align: center; /* Centra el texto en las celdas de la tabla */
+}
+
+.tablaAutos th {
+  background-color: #f2f2f2; /* Color de fondo para encabezados */
+  cursor: pointer;
+}
+
+.tablaAutos th:hover {
+  background-color: #e0e0e0; /* Efecto hover en encabezados */
+}
+
+.tablaAutos tr:hover {
+  background-color: #90beb8; /* Efecto hover en filas */
+}
+
+.botonMostrarDisponibles {
+  background-color: #306f88;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 10px auto; /* Cambia margin-top a auto para centrar */
+  font-size: 16px;
+  display: block; /* Cambia a block para centrar con margin auto */
+  text-align: center; /* Centra el texto dentro del botón */
+}
+
+.botonMostrarDisponibles:hover {
+  background-color: #4cc9c2;
 }

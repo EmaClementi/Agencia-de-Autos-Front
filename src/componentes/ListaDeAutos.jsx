@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Boton from './Boton';
-import './ListaDeAutos.css';
+import Boton from './Boton'; // Asegúrate de que la ruta sea correcta
+import './ListaDeAutos.css'; // Archivo CSS con estilos personalizados
 
 const ListaDeAutos = () => {
   const [autos, setAutos] = useState([]);
@@ -14,7 +14,9 @@ const ListaDeAutos = () => {
     imagenes: [],
   });
   const [autoEnEdicion, setAutoEnEdicion] = useState(null);
+  const [mostrarDisponibles, setMostrarDisponibles] = useState(false); // Estado para controlar la visibilidad de los autos disponibles
 
+  // Función para obtener la lista de autos al montar el componente
   useEffect(() => {
     const fetchAutos = async () => {
       try {
@@ -130,9 +132,52 @@ const ListaDeAutos = () => {
     setAutoEnEdicion(auto);
   };
 
+  // Función para alternar la visibilidad de los vehículos disponibles
+  const toggleMostrarDisponibles = () => {
+    setMostrarDisponibles(!mostrarDisponibles);
+  };
+
   return (
     <div className="listaDeAutos">
-      <h1>Lista de Autos</h1>
+   
+
+      {/* Botón para mostrar/ocultar vehículos disponibles */}
+      <Boton
+        texto={mostrarDisponibles ? 'Ocultar Vehículos Disponibles' : 'Mostrar Vehículos Disponibles'}
+        estilo="botonMostrarDisponibles"
+        onClick={toggleMostrarDisponibles}
+      />
+
+      {/* Mostrar la tabla de autos solo si mostrarDisponibles es verdadero */}
+      {mostrarDisponibles && (
+        <table className="tablaAutos">
+          <thead>
+            <tr>
+              <th>Marca</th>
+              <th>Modelo</th>
+              <th>Año</th>
+              <th>Precio</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {autos.map((auto) => (
+              <tr key={auto._id}>
+                <td>{auto.marca}</td>
+                <td>{auto.modelo}</td>
+                <td>{auto.año}</td>
+                <td>${auto.precio}</td>
+                <td>
+                  <Boton texto="Editar" estilo="botonEditar" onClick={() => editarAuto(auto)} />
+                  <Boton texto="Eliminar" estilo="botonEliminar" onClick={() => eliminarAuto(auto._id)} />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+
+      {/* Formulario para agregar un nuevo auto */}
       <form className='formularioCargaAuto' onSubmit={handleSubmit}>
         <input
           type="text"
@@ -184,15 +229,6 @@ const ListaDeAutos = () => {
         />
         <Boton texto={autoEnEdicion ? 'Actualizar Auto' : 'Agregar Auto'} estilo="buttonAgregarAuto" />
       </form>
-      <ul>
-        {autos.map((auto) => (
-          <li key={auto._id}>
-            {auto.marca} {auto.modelo} ({auto.año}) - ${auto.precio}
-            <Boton texto="Editar" estilo="buttonEditar" onClick={() => editarAuto(auto)} />
-            <Boton texto="Eliminar" estilo="buttonEliminar" onClick={() => eliminarAuto(auto._id)} />
-          </li>
-           ))}
-      </ul>
     </div>
   );
 };
