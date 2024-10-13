@@ -12,7 +12,7 @@ const Navbar = () => {
         <a className="textoLogo" href="/">TuAutoFacil</a>
       </div>
       <div className="navbar-links">
-        <Link to="/agregarauto">Agregar un Auto</Link>
+        <Link to="/agregarauto">Gestionar Autos</Link>
       </div>
     </nav>
   );

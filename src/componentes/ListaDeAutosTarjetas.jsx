@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';  // Importa useNavigate
 import './ListaDeAutosTarjetas.css';
 import FiltroAutos from './FiltroAutos';
+import Boton from './Boton';
 
 function ListaDeAutosTarjetas() {
   const [autos, setAutos] = useState([]);
@@ -9,6 +11,8 @@ function ListaDeAutosTarjetas() {
   const [search, setSearch] = useState('');
   const [tipo, setTipo] = useState('');
   const [sort, setSort] = useState('');
+  
+  const navigate = useNavigate();  // Inicializa useNavigate
 
   const fetchAutos = async (params) => {
     try {
@@ -32,6 +36,10 @@ function ListaDeAutosTarjetas() {
     if (sort) params.append('sort', sort);
     
     fetchAutos(params.toString()); 
+  };
+
+  const handleRedirect = (autoId, tipoTransaccion) => {
+    navigate('/formulariocliente', { state: { autoId, tipoTransaccion } });
   };
 
   useEffect(() => {
@@ -75,6 +83,12 @@ function ListaDeAutosTarjetas() {
               <p className="card-tipo">Tipo: {auto.tipo}</p>
               <p className="card-precio">Precio: ${auto.precio}</p>
             </div>
+
+            <Boton 
+              texto={auto.tipo === 'compra' ? 'Comprar' : 'Alquilar'} 
+              estilo="botonAccion" 
+              onClick={() => handleRedirect(auto._id, auto.tipo)} 
+            />
           </div>
         ))}
       </div>
@@ -83,4 +97,3 @@ function ListaDeAutosTarjetas() {
 }
 
 export default ListaDeAutosTarjetas;
-

@@ -56,3 +56,13 @@
   align-items: center;
   justify-content: center;
 }
+.botonAccion{
+  display: flex;
+  background-color: #61e042; 
+  color: white; 
+  border: none; 
+  cursor: pointer; 
+  padding: 10px 15px; 
+  border-radius: 5px; 
+  margin-left: 10px; 
+}
