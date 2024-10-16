@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';  // Importa useNavigate
+import { useNavigate } from 'react-router-dom';
 import './ListaDeAutosTarjetas.css';
 import FiltroAutos from './FiltroAutos';
 import Boton from './Boton';
@@ -11,8 +11,8 @@ function ListaDeAutosTarjetas() {
   const [search, setSearch] = useState('');
   const [tipo, setTipo] = useState('');
   const [sort, setSort] = useState('');
-  
-  const navigate = useNavigate();  // Inicializa useNavigate
+
+  const navigate = useNavigate();
 
   const fetchAutos = async (params) => {
     try {
@@ -34,8 +34,8 @@ function ListaDeAutosTarjetas() {
     if (search) params.append('search', search);
     if (tipo) params.append('tipo', tipo);
     if (sort) params.append('sort', sort);
-    
-    fetchAutos(params.toString()); 
+
+    fetchAutos(params.toString());
   };
 
   const handleRedirect = (autoId, tipoTransaccion) => {
@@ -43,7 +43,7 @@ function ListaDeAutosTarjetas() {
   };
 
   useEffect(() => {
-    fetchAutos(''); 
+    fetchAutos('');
   }, []);
 
   if (loading) {
@@ -67,30 +67,44 @@ function ListaDeAutosTarjetas() {
       />
 
       <div className="card-list">
-        {autos.map((auto) => (
-          <div key={auto.id} className="card">
-            <div className="image-container">
-              <img
-                src={auto.imagenes[0]}
-                alt={`Imagen de ${auto.modelo}`}
-                className="card-image"
-              />
-            </div>
-            <div className="card-content">
-              <h2 className="card-title">{auto.modelo}</h2>
-              <p className="card-marca">Marca: {auto.marca}</p>
-              <p className="card-año">Año: {auto.año}</p>
-              <p className="card-tipo">Tipo: {auto.tipo}</p>
-              <p className="card-precio">Precio: ${auto.precio}</p>
-            </div>
+        {autos.map((auto) => {
+          // Log para verificar qué valor tiene el status
+          console.log('Estado del auto:', auto.status);
 
-            <Boton 
-              texto={auto.tipo === 'compra' ? 'Comprar' : 'Alquilar'} 
-              estilo="botonAccion" 
-              onClick={() => handleRedirect(auto._id, auto.tipo)} 
-            />
-          </div>
-        ))}
+          const noDisponible = auto.status === 'vendido' || auto.status === 'alquilado';
+
+          return (
+            <div
+              key={auto._id}
+              className={`card ${noDisponible ? 'no-disponible' : ''}`}
+            >
+              <div className="image-container">
+                <img
+                  src={auto.imagenes[0]}
+                  alt={`Imagen de ${auto.modelo}`}
+                  className="card-image"
+                />
+              </div>
+              <div className="card-content">
+                <h2 className="card-title">{auto.modelo}</h2>
+                <p className="card-marca">Marca: {auto.marca}</p>
+                <p className="card-año">Año: {auto.año}</p>
+                <p className="card-tipo">Tipo: {auto.tipo}</p>
+                <p className="card-precio">Precio: ${auto.precio}</p>
+              </div>
+
+              {noDisponible ? (
+                <p className="no-disponible-texto">No disponible</p>
+              ) : (
+                <Boton
+                  texto={auto.tipo === 'compra' ? 'Comprar' : 'Alquilar'}
+                  estilo="botonAccion"
+                  onClick={() => handleRedirect(auto._id, auto.tipo)}
+                />
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

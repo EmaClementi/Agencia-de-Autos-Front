@@ -131,6 +131,24 @@ const ListaDeAutos = () => {
     setNuevoAuto(auto);
     setAutoEnEdicion(auto);
   };
+  const marcarComoDisponible = async (autoId) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/autos/${autoId}/disponible`, {
+        method: 'PUT',
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(`Error al marcar el auto como disponible: ${errorData.message}`);
+      }
+
+      const autoActualizado = await response.json();
+      setAutos((prevAutos) =>
+        prevAutos.map((auto) => (auto._id === autoActualizado._id ? autoActualizado : auto))
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   // Función para alternar la visibilidad de los vehículos disponibles
   const toggleMostrarDisponibles = () => {
@@ -140,42 +158,6 @@ const ListaDeAutos = () => {
   return (
     <div className="listaDeAutos">
    
-
-      {/* Botón para mostrar/ocultar vehículos disponibles */}
-      <Boton
-        texto={mostrarDisponibles ? 'Ocultar Vehículos Disponibles' : 'Mostrar Vehículos Disponibles'}
-        estilo="botonMostrarDisponibles"
-        onClick={toggleMostrarDisponibles}
-      />
-
-      {/* Mostrar la tabla de autos solo si mostrarDisponibles es verdadero */}
-      {mostrarDisponibles && (
-        <table className="tablaAutos">
-          <thead>
-            <tr>
-              <th>Marca</th>
-              <th>Modelo</th>
-              <th>Año</th>
-              <th>Precio</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {autos.map((auto) => (
-              <tr key={auto._id}>
-                <td>{auto.marca}</td>
-                <td>{auto.modelo}</td>
-                <td>{auto.año}</td>
-                <td>${auto.precio}</td>
-                <td>
-                  <Boton texto="Editar" estilo="botonEditar" onClick={() => editarAuto(auto)} />
-                  <Boton texto="Eliminar" estilo="botonEliminar" onClick={() => eliminarAuto(auto._id)} />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
 
       {/* Formulario para agregar un nuevo auto */}
       <form className='formularioCargaAuto' onSubmit={handleSubmit}>
@@ -229,6 +211,52 @@ const ListaDeAutos = () => {
         />
         <Boton texto={autoEnEdicion ? 'Actualizar Auto' : 'Agregar Auto'} estilo="buttonAgregarAuto" />
       </form>
+
+            {/* Botón para mostrar/ocultar vehículos disponibles */}
+            <Boton
+        texto={mostrarDisponibles ? 'Ocultar Vehículos' : 'Mostrar Vehículos'}
+        estilo="botonMostrarDisponibles"
+        onClick={toggleMostrarDisponibles}
+      />
+
+{mostrarDisponibles && (
+        <table className="tablaAutos">
+          <thead>
+            <tr>
+              <th>Marca</th>
+              <th>Modelo</th>
+              <th>Año</th>
+              <th>Tipo</th>
+              <th>Precio</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {autos.map((auto) => (
+              <tr key={auto._id}>
+                <td>{auto.marca}</td>
+                <td>{auto.modelo}</td>
+                <td>{auto.año}</td>
+                <td>{auto.tipo}</td>
+                <td>${auto.precio}</td>
+                <td>
+                  <Boton texto="Editar" estilo="botonEditar" onClick={() => editarAuto(auto)} />
+                  <Boton texto="Eliminar" estilo="botonEliminar" onClick={() => eliminarAuto(auto._id)} />
+
+                  {/* Botón para marcar como disponible solo si el auto está alquilado o vendido */}
+                  {(auto.status === 'alquilado' || auto.status === 'vendido') && (
+                    <Boton
+                      texto="Marcar como Disponible"
+                      estilo="botonMarcarDisponible"
+                      onClick={() => marcarComoDisponible(auto._id)}
+                    />
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };

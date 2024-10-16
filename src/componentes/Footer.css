@@ -8,17 +8,15 @@
     font-family: Arial, sans-serif;
     width: 100%;
     height: 70px;
-    position: fixed; /* Fija el footer */
-    bottom: 0; /* Lo coloca en la parte inferior */
-    left: 0; /* Asegura que esté alineado a la izquierda */
-    z-index: 1000; /* Asegura que se superponga a otros elementos si es necesario */
-  }
-  
+    position: relative; /* Asegura que el footer esté en el flujo del documento */
+    margin-top: auto; /* Empuja el footer al final del contenedor padre */
+}
+
 .footer-logo {
     display: flex;
     align-items: center;
 }
-  
+
 .textoFooter {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: 20px;
@@ -26,8 +24,6 @@
     color: white;
     margin: 10px 10px;
 }
-
-  
 
 
   

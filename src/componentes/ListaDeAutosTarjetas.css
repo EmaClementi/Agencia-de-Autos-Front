@@ -12,7 +12,6 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 20px;
-
 }
 
 .card {
@@ -25,15 +24,15 @@
 }
 
 .image-container {
-  height: 200px; /* Establece una altura fija para el contenedor de la imagen */
-  overflow: hidden; /* Oculta cualquier contenido que sobresalga */
-  position: relative; /* Mantiene el contexto para posicionar otros elementos si es necesario */
+  height: 200px; 
+  overflow: hidden;
+  position: relative;
 }
 
 .card-image {
-  width: 100%; /* Asegura que la imagen ocupe todo el ancho del contenedor */
-  height: 100%; /* Asegura que la imagen ocupe toda la altura del contenedor */
-  object-fit: cover; /* Cubre el contenedor manteniendo la relación de aspecto */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .card-content {
@@ -50,13 +49,15 @@
 .card-precio {
   margin: 5px 0;
 }
-.autos-container{
+
+.autos-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
-.botonAccion{
+
+.botonAccion {
   display: flex;
   background-color: #61e042; 
   color: white; 
@@ -65,4 +66,16 @@
   padding: 10px 15px; 
   border-radius: 5px; 
   margin-left: 10px; 
+}
+
+.card.no-disponible {
+  opacity: 0.5; /* Difumina la tarjeta */
+  pointer-events: none; /* Desactiva la interacción con la tarjeta */
+}
+
+.no-disponible-texto {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 10px;
 }
